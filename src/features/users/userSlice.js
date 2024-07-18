@@ -53,14 +53,29 @@ const userSlice = createSlice({
       //   }
     },
 
+    */
+    addUser: (state, action) => {
+      
+      state.users.push(action.payload);
+    },
+
     removeUser: (state, action) => {
 
+      state.users = state.users.filter((user) => user.id !== action.payload);
     },
 
     updateUser: (state, action) => {
-
+      const { id, name, email, profession, gender, address } = action.payload;
+      const existingUser = state.users.find((user) => user.id === id);
+      
+      if(existingUser){
+        existingUser.name = name,
+        existingUser.email = email,
+        existingUser.profession = profession,
+        existingUser.gender = gender,
+        existingUser.address = address
+      }
     }
-  */
   },
 
   extraReducers: (builder) => {
@@ -77,7 +92,7 @@ const userSlice = createSlice({
       })
       .addCase(fetchUsers.rejected, (state, action) => {
 
-        // state.users = [];
+        state.users = [];
         state.status = STATUSES.ERROR;
       })
   }
